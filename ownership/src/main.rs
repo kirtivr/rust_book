@@ -70,4 +70,83 @@ fn main() {
             println!("{}", some_integer);
         } // Here, some_integer goes out of scope. Nothing special happens.
     }
+
+    {
+        let s1 = String::from("hello");
+        let len = calculate_length(&s1);
+        println!("The length of {} is {}.", s1, len);
+
+        fn calculate_length(s: &String) -> usize {
+            s.len()
+        }
+
+        //let s2 = dangling_reference(s1);
+       // println!("The s2 is {}.", s1);
+
+        // Throws an error.
+        // fn dangling_reference(s: String) -> &String {
+        //     &s
+        // }
+    }
+
+    // References are by default immutable.
+    {
+        let s = String::from("Hello");
+
+//        change(&s);
+
+//        fn change(sref: &String) {
+//            sref.push_str(", World!");
+//        }
+//        println!("modified s is {}.", s);
+    }
+
+    // Mutable reference.
+    {
+        let mut s = String::from("Hello");
+
+        change(&mut s);
+
+        fn change(sref: &mut String) {
+            sref.push_str(", World!");
+        }
+        println!("modified s is {}.", s);
+    }
+
+    // You can only have ONE mutable reference.
+    {
+        let mut s = String::from("Hello");
+        let mut s1 = &mut s;
+        let mut s2 = &mut s1;
+//        s1.push_str(", World!");
+//        println!("{} {}", s1, s2);
+    }
+    // Transfer ownership from method to other code.
+    {
+        let s = transfer_ownership();
+
+        fn transfer_ownership() -> String {
+            let mut s = String::from("Hello");
+            let s1 = &mut s;
+            s1.push_str(", World!");
+            println!("s is {} s1 is {}.", "Something", s1);
+            s
+        }
+        println!("s is {}.", s);
+    }
+
+    {
+        let mut s = String::from("hello");
+
+        let r1 = &s;
+        let r2 = &s;
+        println!("{} and {}", r1, r2);
+        // variables r1 and r2 will not be used after this point.
+
+        let r3 = &mut s;
+        println!("{}", r3);
+
+        let r4 = r1;
+        println!("{}", r4);
+    }
 }
