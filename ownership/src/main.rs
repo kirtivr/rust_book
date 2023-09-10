@@ -146,7 +146,65 @@ fn main() {
         let r3 = &mut s;
         println!("{}", r3);
 
-        let r4 = r1;
-        println!("{}", r4);
+        //let r4 = r1;
+        //println!("{}", r4);
+    }
+
+    // This stuff is from ch 10.
+    // Rust does not allow null values.
+    {
+        let r;
+        r = 5;
+//        {
+//            let x = 5;
+//            r = &x;
+//        }
+
+        //println!("r: {}", r);
+    }
+
+    // Dangling reference example.
+    {
+        let string1 = String::from("abcd");
+        let result;
+        {
+            let string2 = "xyzasdfsdf";
+    
+            result = longest(string1.as_str(), string2);
+            
+            // In practice, it means that the lifetime of the
+            // reference returned by the longest function is the same
+            // as the smaller of the lifetimes of the values referred
+            // to by the function arguments.
+
+            // Borrow checker checks that the value returned has the
+            // lifetime of at least x or y.
+            fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+                if x.len() > y.len() {
+                    x
+                } else {
+                    y
+                }
+            }
+        }
+        println!("The longest string is {}", result);
+        let y = &result;
+        // Reason: string2 is a string literal which have static lifetimes.
+        println!("reference is {} so result ended up owning the string?", result);
+    }
+
+    // Lifetime annotation for structs.
+    {
+        // What this means is that an instance of "ImportantExcerpt"
+        // cannot outlive the reference in part.
+        struct ImportantExcerpt<'a> {
+            part: &'a str,
+        }
+
+        let novel = String::from("Call me Ishmael. Some years ago...");
+        let first_sentence = novel.split('.').next().expect("Could not find a '.'");
+        let i = ImportantExcerpt {
+            part: first_sentence,
+        };        
     }
 }
