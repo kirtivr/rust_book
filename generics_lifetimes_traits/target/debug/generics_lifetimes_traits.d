@@ -1,0 +1,1 @@
+/home/horizon/Documents/git/rustpl/generics_lifetimes_traits/target/debug/generics_lifetimes_traits: /home/horizon/Documents/git/rustpl/generics_lifetimes_traits/src/lib.rs /home/horizon/Documents/git/rustpl/generics_lifetimes_traits/src/main.rs

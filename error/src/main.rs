@@ -86,7 +86,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 }
 
 fn read_username_from_file() -> Result<String, io::Error> {
-    let username_file_result = File::open("hello.txt");
+    let username_file_result: Result<File, io::Error> = File::open("hello.txt");
 
     let mut username_file = match username_file_result {
         Ok(file) => file,
